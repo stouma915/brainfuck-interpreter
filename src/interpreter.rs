@@ -30,7 +30,7 @@ pub fn run(code: String) -> RunResult {
                 println!("Input was requested.");
 
                 let mut done = false;
-                let mut input = 0;
+                let mut input = 0 as i16;
 
                 while !done {
                     println!();
@@ -41,7 +41,7 @@ pub fn run(code: String) -> RunResult {
                     io::stdin().read_line(&mut word).ok();
 
                     let trimmed = word.replace("\n", "");
-                    let parsed = trimmed.parse::<i32>();
+                    let parsed = trimmed.parse::<i16>();
                     match parsed {
                         Ok(result) => {
                             if result >= -128 && result <= 127 {
@@ -57,14 +57,7 @@ pub fn run(code: String) -> RunResult {
                     }
                 }
 
-                (0..input.abs()).for_each(|_| {
-                    if input < 0 {
-                        memory.decrement_value();
-                    } else if input > 0 {
-                        memory.increment_value();
-                    }
-                });
-
+                memory.set_value(input);
             },
             _ => {}
         }

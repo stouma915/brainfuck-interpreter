@@ -41,6 +41,18 @@ impl Memory {
         }
     }
 
+    pub fn set_value(&mut self, value: i16) -> () {
+        self.content.insert(self.pointer, 0);
+
+        (0..value.abs()).for_each(|_| {
+            if value < 0 {
+                self.decrement_value();
+            } else if value > 0 {
+                self.increment_value();
+            }
+        });
+    }
+
     pub fn increment(&mut self) -> () {
         let new_pointer = self.pointer + 1;
 
