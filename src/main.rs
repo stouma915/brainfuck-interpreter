@@ -27,9 +27,19 @@ fn main() {
             exit = true;
         } else {
             let run_result = interpreter::run(trimmed);
-            println!();
-            println!("Content: {}", run_result.content);
-            println!("Memory: {}", util::parse_memory(run_result.memory));
+            match run_result {
+                Ok(data) => {
+                    println!();
+                    println!("{}", "Execution successful.".bright_green());
+                    println!("Content: {}", data.content);
+                    println!("Memory: {}", util::parse_memory(data.memory));
+                },
+                Err(error) => {
+                    println!();
+                    println!("{}", "Execution failed.".bright_red());
+                    println!("Message: {}", error.message);
+                }
+            }
         }
     }
 }

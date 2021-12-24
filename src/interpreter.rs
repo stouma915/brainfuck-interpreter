@@ -4,14 +4,19 @@ use std::io;
 use std::io::Write;
 use colored::Colorize;
 
-pub struct RunResult {
+pub struct Data {
     pub content: String,
     pub memory: Memory
 }
 
-pub fn run(code: String) -> RunResult {
+pub struct BFError {
+    pub message: String
+}
+
+pub fn run(code: String) -> Result<Data, BFError> {
     let mut result = String::from("");
     let mut memory = Memory::new();
+    let mut error = None;
 
     code.chars().for_each(|c| {
         match c {
@@ -63,8 +68,8 @@ pub fn run(code: String) -> RunResult {
         }
     });
 
-    return RunResult {
-        content: result,
-        memory
+    return match error {
+        Some(error) => Err(error),
+        None => Ok(Data { content: result, memory })
     };
 }
