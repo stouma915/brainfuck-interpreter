@@ -6,6 +6,13 @@ pub struct Memory {
 }
 
 impl Memory {
+    pub fn new() -> Memory {
+        return Memory {
+            pointer: 0,
+            content: HashMap::new()
+        };
+    }
+
     #[allow(mutable_borrow_reservation_conflict)]
     pub fn increment_value(&mut self) -> () {
         match self.content.get(&self.pointer) {
@@ -65,7 +72,14 @@ impl Memory {
         self.pointer = new_pointer;
     }
 
-    pub fn get_contents(self) -> BTreeMap<i32, i16> {
+    pub fn get_content(&mut self) -> i16 {
+        return match self.content.get(&self.pointer) {
+            Some(content) => *content,
+            None => 0 as i16
+        }
+    }
+
+    pub fn get_contents(&mut self) -> BTreeMap<i32, i16> {
         let mut sorted_content = BTreeMap::new();
 
         let mut keys = self.content.keys().collect::<Vec<&i32>>();
@@ -77,11 +91,4 @@ impl Memory {
 
         return sorted_content;
     }
-}
-
-pub fn new() -> Memory {
-    return Memory {
-        pointer: 0,
-        content: HashMap::new()
-    };
 }

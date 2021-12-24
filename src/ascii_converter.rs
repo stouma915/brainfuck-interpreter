@@ -1,6 +1,6 @@
 use phf::{Map, phf_map};
 
-const ASCII_MAP: Map<char, i8> = phf_map! {
+const ASCII_MAP: Map<char, i16> = phf_map! {
     ' ' => 32,
     '!' => 33,
     '"' => 34,
@@ -98,6 +98,21 @@ const ASCII_MAP: Map<char, i8> = phf_map! {
     '~' => 126
 };
 
-pub fn convert(c: char) -> Option<&'static i8> {
+pub fn convert_to_i16(c: char) -> Option<&'static i16> {
     return ASCII_MAP.get(&c);
+}
+
+pub fn convert_to_char(i: i16) -> Option<char> {
+    let mut result = None;
+    let keys = ASCII_MAP.keys().collect::<Vec<&char>>();
+
+    keys.iter().for_each(|key| {
+        let value = convert_to_i16(**key).unwrap();
+
+        if *value == i {
+            result = Some(**key);
+        }
+    });
+
+    return result;
 }
