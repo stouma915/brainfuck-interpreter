@@ -24,13 +24,13 @@ pub fn parse_memory(mut memory: Memory) -> String {
 }
 
 pub fn count(string: &String, predicate: fn(char) -> bool) -> isize {
-    let mut cnt = 0 as isize;
+    let mut matches = 0 as isize;
 
     string.as_str().chars().for_each(|c| {
         if predicate(c) {
-            cnt = cnt + 1;
+            matches = matches + 1;
         }
     });
 
-    return cnt;
+    return matches;
 }
