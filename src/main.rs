@@ -27,6 +27,7 @@ fn main() {
             exit = true;
         } else {
             let run_result = interpreter::run(trimmed);
+            println!();
             println!("Content: {}", run_result.content);
             println!("Memory: {}", util::parse_memory(run_result.memory));
         }

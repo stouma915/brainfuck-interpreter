@@ -1,5 +1,8 @@
 use crate::ascii_converter;
 use crate::memory::Memory;
+use std::io;
+use std::io::Write;
+use colored::Colorize;
 
 pub struct RunResult {
     pub content: String,
@@ -22,6 +25,46 @@ pub fn run(code: String) -> RunResult {
                     Some(c) => result.push_str(c.to_string().as_str()),
                     None => result.push_str("?")
                 }
+            },
+            ',' => {
+                println!("Input was requested.");
+
+                let mut done = false;
+                let mut input = 0;
+
+                while !done {
+                    println!();
+                    print!("{}> ", "Input".bright_blue());
+                    io::stdout().flush().unwrap();
+
+                    let mut word = String::new();
+                    io::stdin().read_line(&mut word).ok();
+
+                    let trimmed = word.replace("\n", "");
+                    let parsed = trimmed.parse::<i32>();
+                    match parsed {
+                        Ok(result) => {
+                            if result >= -128 && result <= 127 {
+                                input = result;
+                                done = true;
+                            } else {
+                                println!("{}", "Please enter a 1 byte number.".bright_red());
+                            }
+                        },
+                        Err(_) => {
+                            println!("{}", "Please enter a 1 byte number.".bright_red());
+                        }
+                    }
+                }
+
+                (0..input.abs()).for_each(|_| {
+                    if input < 0 {
+                        memory.decrement_value();
+                    } else if input > 0 {
+                        memory.increment_value();
+                    }
+                });
+
             },
             _ => {}
         }

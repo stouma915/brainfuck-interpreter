@@ -30,13 +30,13 @@ impl Memory {
         match self.content.get(&self.pointer) {
             Some(current_value) => {
                 if current_value <= &(0 as i16) {
-                    self.content.insert(self.pointer, 0);
+                    self.content.insert(self.pointer, 255);
                 } else {
                     self.content.insert(self.pointer, current_value - 1);
                 }
             },
             None => {
-                self.content.insert(self.pointer, 0);
+                self.content.insert(self.pointer, 255);
             }
         }
     }
