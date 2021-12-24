@@ -22,3 +22,15 @@ pub fn parse_memory(mut memory: Memory) -> String {
     parsed_memory.push_str("]");
     return parsed_memory;
 }
+
+pub fn count(string: &String, predicate: fn(char) -> bool) -> isize {
+    let mut cnt = 0 as isize;
+
+    string.as_str().chars().for_each(|c| {
+        if predicate(c) {
+            cnt = cnt + 1;
+        }
+    });
+
+    return cnt;
+}
