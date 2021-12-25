@@ -1,2 +1,2 @@
 # brainfuck-interpreter
-Brain F**kインタプリタ
+Brainf**kインタプリタ
