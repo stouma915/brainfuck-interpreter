@@ -17,7 +17,11 @@ impl Memory {
     pub fn increment_value(&mut self) -> () {
         match self.content.get(&self.pointer) {
             Some(current_value) => {
-                self.content.insert(self.pointer, current_value + 1);
+                if current_value >= &255i16 {
+                    self.content.insert(self.pointer, 0);
+                } else {
+                    self.content.insert(self.pointer, current_value + 1);
+                }
             }
             None => {
                 self.content.insert(self.pointer, 1);
