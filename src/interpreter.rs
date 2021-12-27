@@ -38,10 +38,11 @@ pub fn run(code: &String, memory: &mut Memory) -> Result<Data, BFError> {
                 '>' => memory.increment(),
                 '<' => memory.decrement(),
                 '.' => {
-                    let char = ascii_converter::convert_to_char(memory.get_content());
+                    let char_code = memory.get_content();
+                    let char = ascii_converter::convert_to_char(char_code);
                     match char {
                         Some(c) => result.push_str(c.to_string().as_str()),
-                        None => result.push_str("?")
+                        None => error = Some(BFError { message: String::from(format!("Unknown character code: {}", char_code)) } )
                     }
                 },
                 ',' => {
