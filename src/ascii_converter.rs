@@ -17,5 +17,5 @@ pub fn convert_to_char(i: i16) -> Option<char> {
         result = Some(*chars.get(0).unwrap())
     }
 
-    return result;
+    result
 }

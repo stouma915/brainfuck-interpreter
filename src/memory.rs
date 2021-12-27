@@ -7,10 +7,10 @@ pub struct Memory {
 
 impl Memory {
     pub fn new() -> Memory {
-        return Memory {
+        Memory {
             pointer: 0,
             content: HashMap::new(),
-        };
+        }
     }
 
     #[allow(mutable_borrow_reservation_conflict)]
@@ -88,10 +88,10 @@ impl Memory {
     }
 
     pub fn get_content(&mut self) -> i16 {
-        return match self.content.get(&self.pointer) {
+        match self.content.get(&self.pointer) {
             Some(content) => *content,
             None => 0i16,
-        };
+        }
     }
 
     pub fn get_contents(&mut self) -> BTreeMap<i32, i16> {
@@ -104,6 +104,6 @@ impl Memory {
             sorted_content.insert(**key, *value);
         });
 
-        return sorted_content;
+        sorted_content
     }
 }

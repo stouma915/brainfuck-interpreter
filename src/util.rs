@@ -20,7 +20,8 @@ pub fn parse_memory(mut memory: Memory) -> String {
 
     parsed_memory = parsed_memory[0..parsed_memory.len() - 2].parse().unwrap();
     parsed_memory.push_str("]");
-    return parsed_memory;
+
+    parsed_memory
 }
 
 pub fn count(string: &String, predicate: fn(char) -> bool) -> isize {
@@ -32,5 +33,5 @@ pub fn count(string: &String, predicate: fn(char) -> bool) -> isize {
         }
     });
 
-    return matches;
+    matches
 }

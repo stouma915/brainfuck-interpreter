@@ -167,11 +167,11 @@ pub fn run(code: &String, memory: &mut Memory) -> Result<Data, BFError> {
         content: HashMap::from_iter(memory.get_contents()),
     };
 
-    return match error {
+    match error {
         Some(error) => Err(error),
         None => Ok(Data {
             content: result,
             memory: immutable_memory,
         }),
-    };
+    }
 }

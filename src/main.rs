@@ -48,7 +48,7 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
     let mut memory = Memory::new();
     let run_result = interpreter::run(&source_code, &mut memory);
 
-    return match run_result {
+    match run_result {
         Ok(data) => {
             if verbose {
                 println!("{}", "Execution successful.".bright_green());
@@ -66,7 +66,7 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
 
             1
         }
-    };
+    }
 }
 
 fn interactive_interpreter() -> i32 {
@@ -108,5 +108,5 @@ fn interactive_interpreter() -> i32 {
         }
     }
 
-    return 0;
+    0
 }
