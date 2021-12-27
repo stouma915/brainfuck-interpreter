@@ -18,12 +18,20 @@ fn main() {
             Arg::with_name("SOURCE")
                 .help("Brainfuck source file (Run interactive if not specified)"),
         )
+        .arg(
+            Arg::with_name("verbose")
+                .short("v")
+                .long("verbose")
+                .help("Enable verbose"),
+        )
         .get_matches();
+
+    let verbose = matches.is_present("verbose");
 
     if let Some(source) = matches.value_of("SOURCE") {
         match fs::read_to_string(source) {
             Ok(content) => {
-                exit(interpreter(content, false, false));
+                exit(interpreter(content, verbose));
             }
             Err(err) => {
                 println!("Unable to read source file: {:?}", err.kind());
@@ -35,18 +43,26 @@ fn main() {
     }
 }
 
-fn interpreter(source_code: String, verbose: bool, dump_memory: bool) -> i32 {
+fn interpreter(source_code: String, verbose: bool) -> i32 {
     let mut memory = Memory::new();
     let run_result = interpreter::run(&source_code, &mut memory);
 
     return match run_result {
         Ok(data) => {
-            println!("{}", data.content);
+            if verbose {
+                println!("{}", "Execution successful.".bright_green());
+                println!("Content: {}", data.content);
+                println!("Memory: {}", util::parse_memory(data.memory));
+            } else {
+                println!("{}", data.content);
+            }
+
             0
         }
         Err(error) => {
             println!("{}", "Execution failed.".bright_red());
             println!("Message: {}", error.message);
+
             1
         }
     };
