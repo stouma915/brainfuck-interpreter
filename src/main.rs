@@ -1,6 +1,6 @@
+use colored::Colorize;
 use std::io;
 use std::io::Write;
-use colored::Colorize;
 
 use crate::memory::Memory;
 
@@ -36,7 +36,7 @@ fn main() {
                     println!("{}", "Execution successful.".bright_green());
                     println!("Content: {}", data.content);
                     println!("Memory: {}", util::parse_memory(data.memory));
-                },
+                }
                 Err(error) => {
                     println!();
                     println!("{}", "Execution failed.".bright_red());

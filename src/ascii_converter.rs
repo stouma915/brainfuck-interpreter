@@ -1,4 +1,4 @@
-use phf::{Map, phf_map};
+use phf::{phf_map, Map};
 
 const ASCII_MAP: Map<char, i16> = phf_map! {
     ' ' => 32,

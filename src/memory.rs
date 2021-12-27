@@ -2,14 +2,14 @@ use std::collections::{BTreeMap, HashMap};
 
 pub struct Memory {
     pub pointer: i32,
-    pub content: HashMap<i32, i16>
+    pub content: HashMap<i32, i16>,
 }
 
 impl Memory {
     pub fn new() -> Memory {
         return Memory {
             pointer: 0,
-            content: HashMap::new()
+            content: HashMap::new(),
         };
     }
 
@@ -18,7 +18,7 @@ impl Memory {
         match self.content.get(&self.pointer) {
             Some(current_value) => {
                 self.content.insert(self.pointer, current_value + 1);
-            },
+            }
             None => {
                 self.content.insert(self.pointer, 1);
             }
@@ -34,7 +34,7 @@ impl Memory {
                 } else {
                     self.content.insert(self.pointer, current_value - 1);
                 }
-            },
+            }
             None => {
                 self.content.insert(self.pointer, 255);
             }
@@ -59,7 +59,7 @@ impl Memory {
         match self.content.get(&new_pointer) {
             None => {
                 self.content.insert(new_pointer, 0);
-            },
+            }
             _ => {}
         }
 
@@ -67,17 +67,16 @@ impl Memory {
     }
 
     pub fn decrement(&mut self) -> () {
-        let new_pointer =
-            if self.pointer <= 0 {
-                0
-            } else {
-                self.pointer - 1
-            };
+        let new_pointer = if self.pointer <= 0 {
+            0
+        } else {
+            self.pointer - 1
+        };
 
         match self.content.get(&new_pointer) {
             None => {
                 self.content.insert(new_pointer, 0);
-            },
+            }
             _ => {}
         }
 
@@ -87,8 +86,8 @@ impl Memory {
     pub fn get_content(&mut self) -> i16 {
         return match self.content.get(&self.pointer) {
             Some(content) => *content,
-            None => 0i16
-        }
+            None => 0i16,
+        };
     }
 
     pub fn get_contents(&mut self) -> BTreeMap<i32, i16> {
