@@ -1,6 +1,7 @@
 use colored::Colorize;
-use std::io;
 use std::io::Write;
+use std::process::exit;
+use std::{env, io};
 
 use crate::memory::Memory;
 
@@ -10,6 +11,15 @@ mod memory;
 mod util;
 
 fn main() {
+    let mut args: Vec<String> = env::args().collect();
+    args.remove(0);
+
+    if args.is_empty() {
+        exit(interactive_interpreter());
+    }
+}
+
+fn interactive_interpreter() -> i32 {
     let mut exit = false;
 
     println!("Type \"exit\" to exit.");
@@ -45,4 +55,6 @@ fn main() {
             }
         }
     }
+
+    return 0;
 }
