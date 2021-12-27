@@ -24,7 +24,7 @@ pub fn parse_memory(mut memory: Memory) -> String {
 }
 
 pub fn count(string: &String, predicate: fn(char) -> bool) -> isize {
-    let mut matches = 0 as isize;
+    let mut matches = 0isize;
 
     string.as_str().chars().for_each(|c| {
         if predicate(c) {

@@ -1,6 +1,7 @@
 use std::io;
 use std::io::Write;
 use colored::Colorize;
+use crate::memory::Memory;
 
 mod ascii_converter;
 mod interpreter;
@@ -26,7 +27,8 @@ fn main() {
             println!("Exit");
             exit = true;
         } else {
-            let run_result = interpreter::run(trimmed);
+            let mut memory = Memory::new();
+            let run_result = interpreter::run(&trimmed, &mut memory);
             match run_result {
                 Ok(data) => {
                     println!();

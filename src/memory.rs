@@ -29,7 +29,7 @@ impl Memory {
     pub fn decrement_value(&mut self) -> () {
         match self.content.get(&self.pointer) {
             Some(current_value) => {
-                if current_value <= &(0 as i16) {
+                if current_value <= &0i16 {
                     self.content.insert(self.pointer, 255);
                 } else {
                     self.content.insert(self.pointer, current_value - 1);
@@ -87,7 +87,7 @@ impl Memory {
     pub fn get_content(&mut self) -> i16 {
         return match self.content.get(&self.pointer) {
             Some(content) => *content,
-            None => 0 as i16
+            None => 0i16
         }
     }
 
