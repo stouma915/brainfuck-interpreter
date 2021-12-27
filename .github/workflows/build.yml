@@ -16,8 +16,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install cross
-      run: cargo install cross
     - name: Build
       run: cargo build --verbose
     - name: Upload artifact
