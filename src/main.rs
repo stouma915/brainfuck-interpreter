@@ -29,19 +29,17 @@ fn main() {
 
     let verbose = matches.is_present("verbose");
 
-    if let Some(source) = matches.value_of("SOURCE") {
+    exit(if let Some(source) = matches.value_of("SOURCE") {
         match fs::read_to_string(source) {
-            Ok(content) => {
-                exit(interpreter(content, verbose));
-            }
+            Ok(content) => interpreter(content, verbose),
             Err(err) => {
                 println!("Unable to read source file: {:?}", err.kind());
-                exit(1);
+                1
             }
         }
     } else {
-        exit(interactive_interpreter());
-    }
+        interactive_interpreter()
+    })
 }
 
 fn interpreter(source_code: String, verbose: bool) -> i32 {
