@@ -1,10 +1,11 @@
 use std::collections::HashMap;
-use crate::ascii_converter;
-use crate::memory::Memory;
-use crate::util;
 use std::io;
 use std::io::Write;
 use colored::Colorize;
+
+use crate::ascii_converter;
+use crate::memory::Memory;
+use crate::util;
 
 pub struct Data {
     pub content: String,
