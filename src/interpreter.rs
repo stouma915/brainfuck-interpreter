@@ -17,7 +17,7 @@ pub struct BFError {
     pub message: String,
 }
 
-pub fn run(code: &String, memory: &mut Memory) -> Result<Data, BFError> {
+pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, BFError> {
     let mut result = String::from("");
     let mut error = None;
 
@@ -131,7 +131,7 @@ pub fn run(code: &String, memory: &mut Memory) -> Result<Data, BFError> {
                             .unwrap();
 
                         while memory.get_content() != 0 {
-                            let run_result = run(&content_of_loop, memory);
+                            let run_result = eval(&content_of_loop, memory);
                             match run_result {
                                 Ok(data) => {
                                     result.push_str(data.content.as_str());
@@ -143,7 +143,7 @@ pub fn run(code: &String, memory: &mut Memory) -> Result<Data, BFError> {
                             }
                         }
 
-                        let run_result = run(&after_loop, memory);
+                        let run_result = eval(&after_loop, memory);
                         match run_result {
                             Ok(data) => {
                                 result.push_str(data.content.as_str());

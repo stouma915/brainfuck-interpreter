@@ -46,7 +46,7 @@ fn main() {
 
 fn interpreter(source_code: String, verbose: bool) -> i32 {
     let mut memory = Memory::new();
-    let run_result = interpreter::run(&source_code, &mut memory);
+    let run_result = interpreter::eval(&source_code, &mut memory);
 
     match run_result {
         Ok(data) => {
@@ -90,7 +90,7 @@ fn interactive_interpreter() -> i32 {
             exit = true;
         } else {
             let mut memory = Memory::new();
-            let run_result = interpreter::run(&trimmed, &mut memory);
+            let run_result = interpreter::eval(&trimmed, &mut memory);
 
             match run_result {
                 Ok(data) => {
