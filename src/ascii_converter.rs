@@ -1,6 +1,7 @@
 use phf::{phf_map, Map};
 
 const ASCII_MAP: Map<char, i16> = phf_map! {
+    '\n' => 10,
     ' ' => 32,
     '!' => 33,
     '"' => 34,
