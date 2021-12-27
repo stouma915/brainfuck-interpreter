@@ -1,6 +1,7 @@
 use std::io;
 use std::io::Write;
 use colored::Colorize;
+
 use crate::memory::Memory;
 
 mod ascii_converter;
