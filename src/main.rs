@@ -71,6 +71,7 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
 fn interactive_interpreter() -> i32 {
     let mut exit = false;
 
+    println!("Entering interactive interpreter.");
     println!("Type \"exit\" to exit.");
 
     while !exit {
