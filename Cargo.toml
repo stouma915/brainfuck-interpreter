@@ -8,4 +8,4 @@ authors = ["stouma915"]
 
 [dependencies]
 colored = "2.0.0"
-phf = { version = "0.10.1", features = ["macros"] }
+unescape = "0.1.0"
