@@ -1,8 +1,9 @@
-use clap::{App, Arg};
-use colored::Colorize;
 use std::io::Write;
 use std::process::exit;
 use std::{fs, io};
+
+use clap::{App, Arg};
+use colored::Colorize;
 
 use crate::memory::Memory;
 
