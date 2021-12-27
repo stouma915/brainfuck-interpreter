@@ -23,18 +23,7 @@ fn main() {
     if let Some(source) = matches.value_of("SOURCE") {
         match fs::read_to_string(source) {
             Ok(content) => {
-                let mut memory = Memory::new();
-                let run_result = interpreter::run(&content, &mut memory);
-
-                match run_result {
-                    Ok(data) => {
-                        println!("{}", data.content);
-                    }
-                    Err(error) => {
-                        println!("{}", "Execution failed.".bright_red());
-                        println!("Message: {}", error.message);
-                    }
-                }
+                exit(interpreter(content, false, false));
             }
             Err(err) => {
                 println!("Unable to read source file: {:?}", err.kind());
@@ -44,6 +33,23 @@ fn main() {
     } else {
         exit(interactive_interpreter());
     }
+}
+
+fn interpreter(source_code: String, verbose: bool, dump_memory: bool) -> i32 {
+    let mut memory = Memory::new();
+    let run_result = interpreter::run(&source_code, &mut memory);
+
+    return match run_result {
+        Ok(data) => {
+            println!("{}", data.content);
+            0
+        }
+        Err(error) => {
+            println!("{}", "Execution failed.".bright_red());
+            println!("Message: {}", error.message);
+            1
+        }
+    };
 }
 
 fn interactive_interpreter() -> i32 {
