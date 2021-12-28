@@ -81,14 +81,14 @@ fn interactive_interpreter() -> i32 {
         let mut word = String::new();
         io::stdin().read_line(&mut word).ok();
 
-        let trimmed = word.replace("\n", "");
+        let source_code = word.replace("\n", "");
 
-        if trimmed.to_lowercase() == "exit" {
+        if source_code.to_lowercase() == "exit" {
             println!("Exit");
             exit = true;
         } else {
             let mut memory = Memory::new();
-            let run_result = interpreter::eval(&trimmed, &mut memory);
+            let run_result = interpreter::eval(&source_code, &mut memory);
 
             match run_result {
                 Ok(data) => {
