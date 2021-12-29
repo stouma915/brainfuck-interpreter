@@ -10,3 +10,4 @@ authors = ["stouma915"]
 clap = "2.34.0"
 colored = "2.0.0"
 unescape = "0.1.0"
+lazy_static = "1.4.0"

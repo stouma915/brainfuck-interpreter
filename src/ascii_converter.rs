@@ -1,21 +1,21 @@
+use lazy_static::lazy_static;
 use unescape::unescape;
 
+lazy_static! {
+    static ref LOOKUP_TABLE: Vec<String> = (0..127).map(|n| format!("\\x{:02x}", n)).collect();
+}
+
 pub fn convert_to_char(i: i16) -> Option<char> {
-    let mut result = None;
-
     if i >= 0 && i <= 127 {
-        let hex = if i < 16 {
-            format!("\\x0{:x}", i)
-        } else {
-            format!("\\x{:x}", i)
-        };
+        let escaped = LOOKUP_TABLE.get(i as usize).unwrap().to_owned();
 
-        let chars = unescape(hex.as_str())
+        let chars = unescape(escaped.as_str())
             .unwrap()
             .chars()
             .collect::<Vec<char>>();
-        result = Some(*chars.get(0).unwrap())
-    }
 
-    result
+        Some(*chars.get(0).unwrap())
+    } else {
+        None
+    }
 }
