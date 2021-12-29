@@ -38,7 +38,7 @@ fn main() {
             }
         }
     } else {
-        interactive_interpreter()
+        interactive_interpreter(verbose)
     })
 }
 
@@ -73,7 +73,7 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
     }
 }
 
-fn interactive_interpreter() -> i32 {
+fn interactive_interpreter(verbose: bool) -> i32 {
     let mut exit = false;
 
     println!("Entering interactive interpreter.");
@@ -98,16 +98,20 @@ fn interactive_interpreter() -> i32 {
 
             match result {
                 Ok(eval_result) => {
-                    let content_to_show = if eval_result.content.len() == 0 {
-                        "Nothing to show.".bright_red().italic()
-                    } else {
-                        eval_result.content.as_str().white()
-                    };
+                    if verbose {
+                        let content_to_show = if eval_result.content.len() == 0 {
+                            "Nothing to show.".bright_red().italic()
+                        } else {
+                            eval_result.content.as_str().white()
+                        };
 
-                    println!();
-                    println!("{}", "Execution successful.".bright_green());
-                    println!("Content: {}", content_to_show);
-                    println!("Memory: {}", util::parse_memory(eval_result.memory));
+                        println!();
+                        println!("{}", "Execution successful.".bright_green());
+                        println!("Content: {}", content_to_show);
+                        println!("Memory: {}", util::parse_memory(eval_result.memory));
+                    } else {
+                        println!("{}", eval_result.content);
+                    }
                 }
                 Err(error) => {
                     println!();
