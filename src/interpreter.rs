@@ -130,8 +130,8 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
                     .unwrap();
 
                 while memory.get_content() != 0 {
-                    let run_result = eval(&code_to_loop, memory);
-                    match run_result {
+                    let result = eval(&code_to_loop, memory);
+                    match result {
                         Ok(eval_result) => {
                             result.push_str(eval_result.content.as_str());
                         }
@@ -142,8 +142,8 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
                     }
                 }
 
-                let run_result = eval(&after_loop, memory);
-                match run_result {
+                let result = eval(&after_loop, memory);
+                match result {
                     Ok(eval_result) => {
                         result.push_str(eval_result.content.as_str());
                     }
