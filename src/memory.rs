@@ -58,40 +58,17 @@ impl Memory {
     }
 
     pub fn increment(&mut self) -> () {
-        let new_pointer = self.pointer + 1;
-
-        match self.content.get(&new_pointer) {
-            None => {
-                self.content.insert(new_pointer, 0);
-            }
-            _ => {}
-        }
-
-        self.pointer = new_pointer;
+        self.pointer = self.pointer + 1;
     }
 
     pub fn decrement(&mut self) -> () {
-        let new_pointer = if self.pointer <= 0 {
-            0
-        } else {
-            self.pointer - 1
-        };
-
-        match self.content.get(&new_pointer) {
-            None => {
-                self.content.insert(new_pointer, 0);
-            }
-            _ => {}
+        if self.pointer >= 1 {
+            self.pointer = self.pointer - 1;
         }
-
-        self.pointer = new_pointer;
     }
 
     pub fn get_content(&mut self) -> i16 {
-        match self.content.get(&self.pointer) {
-            Some(content) => *content,
-            None => 0i16,
-        }
+        *self.content.get(&self.pointer).unwrap_or(&0i16)
     }
 
     pub fn get_contents(&mut self) -> BTreeMap<i32, i16> {
