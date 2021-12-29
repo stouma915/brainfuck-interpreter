@@ -1,4 +1,5 @@
 use crate::memory::Memory;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 pub fn parse_memory(mut memory: Memory) -> String {
     if memory.get_contents().is_empty() {
@@ -22,4 +23,12 @@ pub fn parse_memory(mut memory: Memory) -> String {
     parsed_memory.push_str("]");
 
     parsed_memory
+}
+
+pub fn current_epoch_milli() -> Option<u128> {
+    let now = SystemTime::now();
+    match now.duration_since(UNIX_EPOCH) {
+        Ok(duration) => Some(duration.as_millis()),
+        Err(_) => None,
+    }
 }

@@ -43,8 +43,21 @@ fn main() {
 }
 
 fn interpreter(source_code: String, verbose: bool) -> i32 {
+    let start_time = if verbose {
+        util::current_epoch_milli().unwrap()
+    } else {
+        0
+    };
+
     let mut memory = Memory::new();
     let result = interpreter::eval(&source_code, &mut memory);
+
+    let finish_time = if verbose {
+        util::current_epoch_milli().unwrap()
+    } else {
+        0
+    };
+    let elapsed = finish_time - start_time;
 
     match result {
         Ok(eval_result) => {
@@ -57,6 +70,7 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
 
                 println!("{}", "Execution successful.".bright_green());
                 println!("Content: {}", content_to_show);
+                println!("Elapsed: {}ms", elapsed);
                 println!("Memory: {}", util::parse_memory(eval_result.memory));
             } else {
                 println!("{}", eval_result.content);
@@ -67,6 +81,9 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
         Err(error) => {
             println!("{}", "Execution failed.".bright_red());
             println!("Message: {}", error.message);
+            if verbose {
+                println!("Elapsed: {}ms", elapsed);
+            }
 
             1
         }
@@ -93,8 +110,21 @@ fn interactive_interpreter(verbose: bool) -> i32 {
             println!("Exit");
             exit = true;
         } else {
+            let start_time = if verbose {
+                util::current_epoch_milli().unwrap()
+            } else {
+                0
+            };
+
             let mut memory = Memory::new();
             let result = interpreter::eval(&source_code, &mut memory);
+
+            let finish_time = if verbose {
+                util::current_epoch_milli().unwrap()
+            } else {
+                0
+            };
+            let elapsed = finish_time - start_time;
 
             match result {
                 Ok(eval_result) => {
@@ -108,6 +138,7 @@ fn interactive_interpreter(verbose: bool) -> i32 {
                         println!();
                         println!("{}", "Execution successful.".bright_green());
                         println!("Content: {}", content_to_show);
+                        println!("Elapsed: {}ms", elapsed);
                         println!("Memory: {}", util::parse_memory(eval_result.memory));
                     } else {
                         println!("{}", eval_result.content);
@@ -117,6 +148,9 @@ fn interactive_interpreter(verbose: bool) -> i32 {
                     println!();
                     println!("{}", "Execution failed.".bright_red());
                     println!("Message: {}", error.message);
+                    if verbose {
+                        println!("Elapsed: {}ms", elapsed);
+                    }
                 }
             }
         }
