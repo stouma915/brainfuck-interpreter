@@ -10,6 +10,6 @@ static LOOKUP_TABLE: Lazy<Vec<char>> = Lazy::new(|| {
         .collect()
 });
 
-pub fn convert_to_char(i: i16) -> Option<char> {
-    LOOKUP_TABLE.get(i as usize).map(|e| *e)
+pub fn convert_to_char(i: i16) -> Option<&'static char> {
+    LOOKUP_TABLE.get(i as usize)
 }
