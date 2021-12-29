@@ -7,7 +7,7 @@ use crate::ascii_converter;
 use crate::memory::Memory;
 use crate::util;
 
-pub struct Data {
+pub struct EvalResult {
     pub content: String,
     pub memory: Memory,
 }
@@ -16,7 +16,7 @@ pub struct EvalError {
     pub message: String,
 }
 
-pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, EvalError> {
+pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError> {
     let mut result = String::from("");
     let mut error = None;
 
@@ -132,8 +132,8 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, EvalError> {
                 while memory.get_content() != 0 {
                     let run_result = eval(&code_to_loop, memory);
                     match run_result {
-                        Ok(data) => {
-                            result.push_str(data.content.as_str());
+                        Ok(eval_result) => {
+                            result.push_str(eval_result.content.as_str());
                         }
                         Err(err) => {
                             error = Some(err);
@@ -144,8 +144,8 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, EvalError> {
 
                 let run_result = eval(&after_loop, memory);
                 match run_result {
-                    Ok(data) => {
-                        result.push_str(data.content.as_str());
+                    Ok(eval_result) => {
+                        result.push_str(eval_result.content.as_str());
                     }
                     Err(err) => {
                         error = Some(err);
@@ -162,7 +162,7 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, EvalError> {
 
     match error {
         Some(error) => Err(error),
-        None => Ok(Data {
+        None => Ok(EvalResult {
             content: result,
             memory: memory.copied(),
         }),
