@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use std::io;
 use std::io::Write;
 
@@ -161,16 +160,11 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, EvalError> {
         index = index + 1;
     }
 
-    let immutable_memory = Memory {
-        pointer: memory.pointer,
-        content: HashMap::from_iter(memory.get_contents()),
-    };
-
     match error {
         Some(error) => Err(error),
         None => Ok(Data {
             content: result,
-            memory: immutable_memory,
+            memory: memory.copied(),
         }),
     }
 }
