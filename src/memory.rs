@@ -13,35 +13,21 @@ impl Memory {
         }
     }
 
-    #[allow(mutable_borrow_reservation_conflict)]
     pub fn increment_value(&mut self) -> () {
-        match self.content.get(&self.pointer) {
-            Some(current_value) => {
-                if current_value >= &255i16 {
-                    self.content.insert(self.pointer, 0);
-                } else {
-                    self.content.insert(self.pointer, current_value + 1);
-                }
-            }
-            None => {
-                self.content.insert(self.pointer, 1);
-            }
+        let new_value = self.content.get(&self.pointer).unwrap_or(&0i16) + 1;
+        if new_value >= 256 {
+            self.content.insert(self.pointer, 0);
+        } else {
+            self.content.insert(self.pointer, new_value);
         }
     }
 
-    #[allow(mutable_borrow_reservation_conflict)]
     pub fn decrement_value(&mut self) -> () {
-        match self.content.get(&self.pointer) {
-            Some(current_value) => {
-                if current_value <= &0i16 {
-                    self.content.insert(self.pointer, 255);
-                } else {
-                    self.content.insert(self.pointer, current_value - 1);
-                }
-            }
-            None => {
-                self.content.insert(self.pointer, 255);
-            }
+        let new_value = self.content.get(&self.pointer).unwrap_or(&256i16) - 1;
+        if new_value <= -1 {
+            self.content.insert(self.pointer, 255);
+        } else {
+            self.content.insert(self.pointer, new_value);
         }
     }
 
