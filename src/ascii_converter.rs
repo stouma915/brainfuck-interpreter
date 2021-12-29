@@ -11,9 +11,5 @@ lazy_static! {
 }
 
 pub fn convert_to_char(i: i16) -> Option<char> {
-    if i >= 0 && i <= 127 {
-        Some(*LOOKUP_TABLE.get(i as usize).unwrap())
-    } else {
-        None
-    }
+    LOOKUP_TABLE.get(i as usize).map(|e| *e)
 }
