@@ -32,6 +32,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Add target
+        run: rustup target add x86_64-pc-windows-gnu
       - name: Build
         run: cargo build --verbose --release --target x86_64-pc-windows-gnu
       - name: Rename artifact
