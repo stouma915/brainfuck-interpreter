@@ -3,7 +3,7 @@ use std::process::exit;
 use std::{fs, io};
 
 use clap::{App, Arg};
-use colored::Colorize;
+use colored::{ColoredString, Colorize};
 
 use crate::memory::Memory;
 
@@ -65,13 +65,17 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
                 let content_to_show = if eval_result.content.len() == 0 {
                     "Nothing to show.".bright_red().italic()
                 } else {
-                    eval_result.content.as_str().white()
+                    ColoredString::from(eval_result.content.as_str())
                 };
 
                 println!("{}", "Execution successful.".bright_green());
-                println!("Content: {}", content_to_show);
-                println!("Elapsed: {}ms", elapsed);
-                println!("Memory: {}", util::parse_memory(eval_result.memory));
+                println!("{}: {}", "Content".bright_blue(), content_to_show);
+                println!("{}: {}ms", "Elapsed".bright_blue(), elapsed);
+                println!(
+                    "{}: {}",
+                    "Memory".bright_blue(),
+                    util::parse_memory(eval_result.memory)
+                );
             } else {
                 println!("{}", eval_result.content);
             }
@@ -80,9 +84,9 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
         }
         Err(error) => {
             println!("{}", "Execution failed.".bright_red());
-            println!("Message: {}", error.message);
+            println!("{}: {}", "Message".bright_blue(), error.message);
             if verbose {
-                println!("Elapsed: {}ms", elapsed);
+                println!("{}: {}ms", "Elapsed".bright_blue(), elapsed);
             }
 
             1
@@ -132,14 +136,18 @@ fn interactive_interpreter(verbose: bool) -> i32 {
                         let content_to_show = if eval_result.content.len() == 0 {
                             "Nothing to show.".bright_red().italic()
                         } else {
-                            eval_result.content.as_str().white()
+                            ColoredString::from(eval_result.content.as_str())
                         };
 
                         println!();
                         println!("{}", "Execution successful.".bright_green());
-                        println!("Content: {}", content_to_show);
-                        println!("Elapsed: {}ms", elapsed);
-                        println!("Memory: {}", util::parse_memory(eval_result.memory));
+                        println!("{}: {}", "Content".bright_blue(), content_to_show);
+                        println!("{}: {}ms", "Elapsed".bright_blue(), elapsed);
+                        println!(
+                            "{}: {}",
+                            "Memory".bright_blue(),
+                            util::parse_memory(eval_result.memory)
+                        );
                     } else {
                         println!("{}", eval_result.content);
                     }
@@ -147,9 +155,9 @@ fn interactive_interpreter(verbose: bool) -> i32 {
                 Err(error) => {
                     println!();
                     println!("{}", "Execution failed.".bright_red());
-                    println!("Message: {}", error.message);
+                    println!("{}: {}", "Message".bright_blue(), error.message);
                     if verbose {
-                        println!("Elapsed: {}ms", elapsed);
+                        println!("{}: {}ms", "Elapsed".bright_blue(), elapsed);
                     }
                 }
             }
