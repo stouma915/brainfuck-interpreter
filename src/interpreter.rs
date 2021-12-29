@@ -5,7 +5,6 @@ use colored::Colorize;
 
 use crate::ascii_converter;
 use crate::memory::Memory;
-use crate::util;
 
 pub struct EvalResult {
     pub content: String,
@@ -20,22 +19,14 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
     let mut content = String::from("");
     let mut error = None;
 
-    let count_of_start_loop = util::count(&code, |c| c == '[');
-    let count_of_end_loop = util::count(&code, |c| c == ']');
-
-    if count_of_start_loop != count_of_end_loop {
-        return Err(EvalError {
-            message: String::from("Syntax Error"),
-        });
-    }
-
-    let mut index = 0;
-
     let chars = code.chars().collect::<Vec<char>>();
-    for c in chars {
+    for elem in chars.iter().enumerate() {
         if error.is_some() {
             break;
         }
+
+        let index = elem.0;
+        let c = elem.1;
 
         match c {
             '+' => memory.increment_value(),
@@ -156,8 +147,6 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
             }
             _ => {}
         }
-
-        index = index + 1;
     }
 
     match error {
