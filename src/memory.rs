@@ -62,10 +62,10 @@ impl Memory {
 
         let mut keys = self.content.keys().collect::<Vec<&i32>>();
         keys.sort();
-        keys.iter().for_each(|key| {
+        for key in keys {
             let value = self.content.get(key).unwrap();
-            sorted_content.insert(**key, *value);
-        });
+            sorted_content.insert(*key, *value);
+        }
 
         sorted_content
     }
