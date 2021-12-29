@@ -1,5 +1,6 @@
-use crate::memory::Memory;
 use std::time::{SystemTime, UNIX_EPOCH};
+
+use crate::memory::Memory;
 
 pub fn parse_memory(mut memory: Memory) -> String {
     if memory.get_contents().is_empty() {
