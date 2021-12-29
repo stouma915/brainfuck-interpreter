@@ -17,7 +17,7 @@ pub struct EvalError {
 }
 
 pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError> {
-    let mut result = String::from("");
+    let mut content = String::from("");
     let mut error = None;
 
     let count_of_start_loop = util::count(&code, |c| c == '[');
@@ -45,7 +45,7 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
             '.' => {
                 let char_code = memory.get_content();
                 match ascii_converter::convert_to_char(char_code) {
-                    Some(ch) => result.push_str(ch.to_string().as_str()),
+                    Some(ch) => content.push_str(ch.to_string().as_str()),
                     None => {
                         error = Some(EvalError {
                             message: String::from(format!("Unknown character code: {}", char_code)),
@@ -133,7 +133,7 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
                     let result = eval(&code_to_loop, memory);
                     match result {
                         Ok(eval_result) => {
-                            result.push_str(eval_result.content.as_str());
+                            content.push_str(eval_result.content.as_str());
                         }
                         Err(err) => {
                             error = Some(err);
@@ -145,7 +145,7 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
                 let result = eval(&after_loop, memory);
                 match result {
                     Ok(eval_result) => {
-                        result.push_str(eval_result.content.as_str());
+                        content.push_str(eval_result.content.as_str());
                     }
                     Err(err) => {
                         error = Some(err);
@@ -163,7 +163,7 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
     match error {
         Some(error) => Err(error),
         None => Ok(EvalResult {
-            content: result,
+            content,
             memory: memory.copied(),
         }),
     }
