@@ -44,16 +44,16 @@ fn main() {
 
 fn interpreter(source_code: String, verbose: bool) -> i32 {
     let mut memory = Memory::new();
-    let run_result = interpreter::eval(&source_code, &mut memory);
+    let result = interpreter::eval(&source_code, &mut memory);
 
-    match run_result {
-        Ok(data) => {
+    match result {
+        Ok(eval_result) => {
             if verbose {
                 println!("{}", "Execution successful.".bright_green());
-                println!("Content: {}", data.content);
-                println!("Memory: {}", util::parse_memory(data.memory));
+                println!("Content: {}", eval_result.content);
+                println!("Memory: {}", util::parse_memory(eval_result.memory));
             } else {
-                println!("{}", data.content);
+                println!("{}", eval_result.content);
             }
 
             0
@@ -88,14 +88,14 @@ fn interactive_interpreter() -> i32 {
             exit = true;
         } else {
             let mut memory = Memory::new();
-            let run_result = interpreter::eval(&source_code, &mut memory);
+            let result = interpreter::eval(&source_code, &mut memory);
 
-            match run_result {
-                Ok(data) => {
+            match result {
+                Ok(eval_result) => {
                     println!();
                     println!("{}", "Execution successful.".bright_green());
-                    println!("Content: {}", data.content);
-                    println!("Memory: {}", util::parse_memory(data.memory));
+                    println!("Content: {}", eval_result.content);
+                    println!("Memory: {}", util::parse_memory(eval_result.memory));
                 }
                 Err(error) => {
                     println!();
