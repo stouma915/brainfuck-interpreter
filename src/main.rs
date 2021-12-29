@@ -14,7 +14,7 @@ mod util;
 
 fn main() {
     let matches = App::new("Brainf**k Interpreter")
-        .version(option_env!("CARGO_PKG_VERSION").unwrap_or("1.0.0"))
+        .version(option_env!("CARGO_PKG_VERSION").unwrap_or("unknown"))
         .arg(
             Arg::with_name("SOURCE")
                 .help("Brainfuck source file (Run interactive if not specified)"),
