@@ -13,11 +13,11 @@ pub struct Data {
     pub memory: Memory,
 }
 
-pub struct BFError {
+pub struct EvalError {
     pub message: String,
 }
 
-pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, BFError> {
+pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, EvalError> {
     let mut result = String::from("");
     let mut error = None;
 
@@ -25,7 +25,7 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, BFError> {
     let count_of_end_loop = util::count(&code, |c| c == ']');
 
     if count_of_start_loop != count_of_end_loop {
-        error = Some(BFError {
+        error = Some(EvalError {
             message: String::from("Syntax Error"),
         });
     }
@@ -46,7 +46,7 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, BFError> {
                     match char {
                         Some(c) => result.push_str(c.to_string().as_str()),
                         None => {
-                            error = Some(BFError {
+                            error = Some(EvalError {
                                 message: String::from(format!(
                                     "Unknown character code: {}",
                                     char_code
@@ -119,7 +119,7 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<Data, BFError> {
                     });
 
                     if !found {
-                        error = Some(BFError {
+                        error = Some(EvalError {
                             message: String::from("The end of the loop couldn't be identified."),
                         });
                     } else {
