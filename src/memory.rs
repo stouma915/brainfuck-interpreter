@@ -70,12 +70,10 @@ impl Memory {
         sorted_content
     }
 
-    pub fn copied(&mut self) -> Memory {
-        let copied_content = HashMap::from_iter(self.get_contents());
-
+    pub fn copied(&self) -> Memory {
         Memory {
             pointer: self.pointer,
-            content: copied_content,
+            content: self.content.clone(),
         }
     }
 }
