@@ -10,16 +10,34 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  build_linux_bin:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
     - name: Build
-      run: cargo build --verbose --release
+      run: cargo build --verbose --release --target x86_64-unknown-linux-gnu
+    - name: Rename artifact
+      run: cd target/x86_64-unknown-linux-gnu/release ; mv brainfuck-interpreter x86_64-unknown-linux-gnu-brainfuck-interpreter
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: brainfuck-interpreter
-        path: target/debug/brainfuck-interpreter
+        name: x86_64-unknown-linux-gnu-brainfuck-interpreter
+        path: target/x86_64-unknown-linux-gnu/release/x86_64-unknown-linux-gnu-brainfuck-interpreter
+
+  build_windows_bin:
+
+    runs-on: windows-2019
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: cargo build --verbose --release --target x86_64-pc-windows-gnu
+      - name: Rename artifact
+        run: cd target/x86_64-pc-windows-gnu/release ; ren brainfuck-interpreter.exe x86_64-pc-windows-gnu-brainfuck-interpreter.exe
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: x86_64-pc-windows-gnu-brainfuck-interpreter
+          path: target/x86_64-pc-windows-gnu/release/x86_64-pc-windows-gnu-brainfuck-interpreter.exe
