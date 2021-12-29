@@ -49,8 +49,14 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
     match result {
         Ok(eval_result) => {
             if verbose {
+                let content_to_show = if eval_result.content.len() == 0 {
+                    "Nothing to show.".bright_red().italic()
+                } else {
+                    eval_result.content.as_str().white()
+                };
+
                 println!("{}", "Execution successful.".bright_green());
-                println!("Content: {}", eval_result.content);
+                println!("Content: {}", content_to_show);
                 println!("Memory: {}", util::parse_memory(eval_result.memory));
             } else {
                 println!("{}", eval_result.content);
@@ -92,9 +98,15 @@ fn interactive_interpreter() -> i32 {
 
             match result {
                 Ok(eval_result) => {
+                    let content_to_show = if eval_result.content.len() == 0 {
+                        "Nothing to show.".bright_red().italic()
+                    } else {
+                        eval_result.content.as_str().white()
+                    };
+
                     println!();
                     println!("{}", "Execution successful.".bright_green());
-                    println!("Content: {}", eval_result.content);
+                    println!("Content: {}", content_to_show);
                     println!("Memory: {}", util::parse_memory(eval_result.memory));
                 }
                 Err(error) => {
