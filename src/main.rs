@@ -44,7 +44,13 @@ fn main() {
 
 fn interpreter(source_code: String, verbose: bool) -> i32 {
     let start_time = if verbose {
-        util::current_epoch_milli().unwrap()
+        match util::current_epoch_milli() {
+            Some(time) => time,
+            None => {
+                println!("Unable to get the current unix epoch.");
+                exit(1);
+            }
+        }
     } else {
         0
     };
@@ -53,7 +59,13 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
     let result = interpreter::eval(&source_code, &mut memory);
 
     let finish_time = if verbose {
-        util::current_epoch_milli().unwrap()
+        match util::current_epoch_milli() {
+            Some(time) => time,
+            None => {
+                println!("Unable to get the current unix epoch.");
+                exit(1);
+            }
+        }
     } else {
         0
     };
@@ -115,7 +127,13 @@ fn interactive_interpreter(verbose: bool) -> i32 {
             exit = true;
         } else {
             let start_time = if verbose {
-                util::current_epoch_milli().unwrap()
+                match util::current_epoch_milli() {
+                    Some(time) => time,
+                    None => {
+                        println!("Unable to get the current unix epoch.");
+                        std::process::exit(1);
+                    }
+                }
             } else {
                 0
             };
@@ -124,7 +142,13 @@ fn interactive_interpreter(verbose: bool) -> i32 {
             let result = interpreter::eval(&source_code, &mut memory);
 
             let finish_time = if verbose {
-                util::current_epoch_milli().unwrap()
+                match util::current_epoch_milli() {
+                    Some(time) => time,
+                    None => {
+                        println!("Unable to get the current unix epoch.");
+                        std::process::exit(1);
+                    }
+                }
             } else {
                 0
             };
