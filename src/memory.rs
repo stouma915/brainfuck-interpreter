@@ -58,7 +58,7 @@ impl Memory {
     }
 
     pub fn get_contents(&mut self) -> HashMap<i32, i16> {
-        return self.content.clone();
+        self.content.clone()
     }
 
     pub fn copied(&self) -> Memory {
