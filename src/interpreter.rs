@@ -25,10 +25,7 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
             break;
         }
 
-        let index = elem.0;
-        let c = elem.1;
-
-        match c {
+        match elem.1 {
             '+' => memory.increment_value(),
             '-' => memory.decrement_value(),
             '>' => memory.increment(),
@@ -79,8 +76,8 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
                 memory.set_value(input);
             }
             '[' => {
-                let code_before_bracket = code[0..index].parse::<String>().unwrap();
-                let code_after_bracket = code[index..code.len()].parse::<String>().unwrap();
+                let code_before_bracket = code[0..elem.0].parse::<String>().unwrap();
+                let code_after_bracket = code[elem.0..code.len()].parse::<String>().unwrap();
 
                 let mut count_of_bracket = 0;
                 let mut count_of_closing_bracket = 0;
@@ -113,7 +110,7 @@ pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError>
                 }
 
                 let length_of_code = code.len();
-                let code_to_loop = code[index + 1..loop_end_index.unwrap()]
+                let code_to_loop = code[elem.0 + 1..loop_end_index.unwrap()]
                     .parse::<String>()
                     .unwrap();
                 let after_loop = code[loop_end_index.unwrap() + 1..length_of_code]
