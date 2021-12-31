@@ -11,14 +11,12 @@ pub fn parse_memory(mut memory: Memory) -> String {
 
     let memory_contents = memory.get_contents();
 
-    memory_contents
-        .keys()
-        .collect::<Vec<&i32>>()
-        .iter()
-        .for_each(|key| {
-            let value = memory_contents.get(key).unwrap();
-            parsed_memory.push_str(&*format!("{} : {}, ", key, value));
-        });
+    let mut keys = memory_contents.keys().collect::<Vec<&i32>>();
+    keys.sort();
+    for key in keys {
+        let value = memory_contents.get(key).unwrap();
+        parsed_memory.push_str(&*format!("{} : {}, ", key, value));
+    }
 
     parsed_memory = parsed_memory[0..parsed_memory.len() - 2].parse().unwrap();
     parsed_memory.push_str("]");

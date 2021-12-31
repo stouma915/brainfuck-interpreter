@@ -1,4 +1,4 @@
-use std::collections::{BTreeMap, HashMap};
+use std::collections::HashMap;
 
 pub struct Memory {
     pub pointer: i32,
@@ -57,17 +57,8 @@ impl Memory {
         *self.content.get(&self.pointer).unwrap_or(&0i16)
     }
 
-    pub fn get_contents(&mut self) -> BTreeMap<i32, i16> {
-        let mut sorted_content = BTreeMap::new();
-
-        let mut keys = self.content.keys().collect::<Vec<&i32>>();
-        keys.sort();
-        for key in keys {
-            let value = self.content.get(key).unwrap();
-            sorted_content.insert(*key, *value);
-        }
-
-        sorted_content
+    pub fn get_contents(&mut self) -> HashMap<i32, i16> {
+        return self.content.clone();
     }
 
     pub fn copied(&self) -> Memory {
