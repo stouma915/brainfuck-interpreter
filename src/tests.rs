@@ -18,66 +18,34 @@ mod ascii_converter_spec {
 
 #[cfg(test)]
 mod interpreter_spec {
+    use std::fs;
+
+    use phf::{phf_map, Map};
+
     use crate::interpreter::eval;
     use crate::Memory;
 
     #[test]
     fn can_evaluate_brainfuck_code() {
-        assert_eq!(
-            eval(
-                &String::from(
-                    "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.+.+."
-                ),
-                &mut Memory::new()
-            )
-            .ok()
-            .unwrap()
-            .content,
-            "ABC"
-        );
-        assert_eq!(
-            eval(
-                &String::from("++++++++++++++++++++++++++++++++++++++++++++++++++-.+.+."),
-                &mut Memory::new()
-            )
-            .ok()
-            .unwrap()
-            .content,
-            "123"
-        );
-    }
+        let tests: Map<&str, &str> = phf_map! {
+            "hello.bf" => "Hello.",
+            "hydrogen_sound.bf" => "Ahh~! The sound of hydrogen!!"
+        };
 
-    #[test]
-    fn can_evaluate_loop_code() {
-        assert_eq!(
-            eval(&String::from("----[---->+<]>++.+.+."), &mut Memory::new())
-                .ok()
-                .unwrap()
-                .content,
-            "ABC"
-        );
-        assert_eq!(
-            eval(&String::from("-[----->+<]>--.+.+."), &mut Memory::new())
-                .ok()
-                .unwrap()
-                .content,
-            "123"
-        );
-    }
+        for file in tests.keys() {
+            let expected = tests.get(file).unwrap();
 
-    #[test]
-    fn can_throw_an_error() {
-        assert_eq!(
-            eval(&String::from("[[[[["), &mut Memory::new())
-                .err()
-                .is_some(),
-            true
-        );
-        assert_eq!(
-            eval(&String::from("-."), &mut Memory::new())
-                .err()
-                .is_some(),
-            true
-        );
+            match fs::read_to_string(format!("tests/{}", file)) {
+                Ok(content) => {
+                    assert_eq!(
+                        eval(&content, &mut Memory::new()).ok().unwrap().content,
+                        String::from(*expected)
+                    );
+                }
+                Err(err) => {
+                    panic!("Unable to read test file: {} ({:?})", file, err.kind());
+                }
+            }
+        }
     }
 }
