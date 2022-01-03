@@ -126,7 +126,11 @@ fn interactive_interpreter(verbose: bool) -> i32 {
         let mut word = String::new();
         io::stdin().read_line(&mut word).ok();
 
-        let source_code = word.replace("\n", "");
+        let source_code = if cfg!(not(windows)) {
+            word.replace("\n", "")
+        } else {
+            word.replace("\r\n", "")
+        };
 
         if source_code.to_lowercase() == "exit" {
             println!("Exit");
