@@ -10,6 +10,7 @@ use crate::memory::Memory;
 mod ascii_converter;
 mod interpreter;
 mod memory;
+mod tests;
 mod util;
 
 fn main() {
