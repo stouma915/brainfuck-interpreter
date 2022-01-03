@@ -37,10 +37,9 @@ mod interpreter_spec {
 
             match fs::read_to_string(format!("tests/{}", file)) {
                 Ok(content) => {
-                    assert_eq!(
-                        eval(&content, &mut Memory::new()).ok().unwrap().content,
-                        String::from(*expected)
-                    );
+                    let eval_result = eval(&content, &mut Memory::new());
+                    assert_eq!(eval_result.is_ok(), true);
+                    assert_eq!(eval_result.ok().unwrap().content, String::from(*expected));
                 }
                 Err(err) => {
                     panic!("Unable to read test file: {} ({:?})", file, err.kind());
