@@ -14,6 +14,32 @@ mod tests {
     #[test]
     fn can_evaluate_brainfuck_code() {
         assert_eq!(
+            eval(
+                &String::from(
+                    "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++.+.+."
+                ),
+                &mut Memory::new()
+            )
+            .ok()
+            .unwrap()
+            .content,
+            "ABC"
+        );
+        assert_eq!(
+            eval(
+                &String::from("++++++++++++++++++++++++++++++++++++++++++++++++++-.+.+."),
+                &mut Memory::new()
+            )
+            .ok()
+            .unwrap()
+            .content,
+            "123"
+        );
+    }
+
+    #[test]
+    fn can_evaluate_loop_code() {
+        assert_eq!(
             eval(&String::from("----[---->+<]>++.+.+."), &mut Memory::new())
                 .ok()
                 .unwrap()

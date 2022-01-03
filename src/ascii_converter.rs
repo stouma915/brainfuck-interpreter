@@ -11,6 +11,11 @@ mod tests {
         assert_eq!(convert_to_char(66), Some(&'B'));
         assert_eq!(convert_to_char(67), Some(&'C'));
         assert_eq!(convert_to_char(68), Some(&'D'));
+
+        assert_eq!(convert_to_char(128), None);
+        assert_eq!(convert_to_char(129), None);
+        assert_eq!(convert_to_char(130), None);
+        assert_eq!(convert_to_char(131), None);
     }
 }
 
