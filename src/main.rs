@@ -15,12 +15,7 @@ mod util;
 
 fn main() {
     #[cfg(target_os = "windows")]
-    let enabled = ansi_term::enable_ansi_support().is_ok();
-
-    #[cfg(not(target_os = "windows"))]
-    let enabled = true;
-
-    if enabled {
+    if ansi_term::enable_ansi_support().is_ok() {
         colored::control::set_override(true);
     }
 
