@@ -37,7 +37,7 @@ fn main() {
 
     exit(if let Some(source) = matches.value_of("SOURCE") {
         match fs::read_to_string(source) {
-            Ok(content) => interpreter(content, verbose),
+            Ok(content) => interpreter(content.as_str(), verbose),
             Err(err) => {
                 println!("Unable to read source file: {:?}", err.kind());
                 1
@@ -48,7 +48,7 @@ fn main() {
     })
 }
 
-fn interpreter(source_code: String, verbose: bool) -> i32 {
+fn interpreter(source_code: &str, verbose: bool) -> i32 {
     let start_time = if verbose {
         match util::current_epoch_milli() {
             Some(time) => time,
@@ -62,7 +62,7 @@ fn interpreter(source_code: String, verbose: bool) -> i32 {
     };
 
     let mut memory = Memory::new();
-    let result = interpreter::eval(&source_code, &mut memory);
+    let result = interpreter::eval(source_code, &mut memory);
 
     let finish_time = if verbose {
         match util::current_epoch_milli() {
@@ -149,7 +149,7 @@ fn interactive_interpreter(verbose: bool) -> i32 {
             };
 
             let mut memory = Memory::new();
-            let result = interpreter::eval(&source_code, &mut memory);
+            let result = interpreter::eval(source_code.as_str(), &mut memory);
 
             let finish_time = if verbose {
                 match util::current_epoch_milli() {

@@ -15,7 +15,7 @@ pub struct EvalError {
     pub message: String,
 }
 
-pub fn eval(code: &String, memory: &mut Memory) -> Result<EvalResult, EvalError> {
+pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
     let mut content = String::from("");
     let mut error = None;
 
