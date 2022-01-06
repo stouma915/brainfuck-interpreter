@@ -33,7 +33,7 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
             '.' => {
                 let char_code = memory.get_content();
                 match ascii_converter::convert_to_char(char_code) {
-                    Some(ch) => content.push_str(ch.to_string().as_str()),
+                    Some(c) => content.push_str(c.to_string().as_str()),
                     None => {
                         error = Some(EvalError {
                             message: String::from(format!("Unknown character code: {}", char_code)),
