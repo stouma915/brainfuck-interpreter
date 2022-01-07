@@ -28,12 +28,13 @@ mod interpreter_spec {
     #[test]
     fn can_evaluate_brainfuck_code() {
         let test_files: Map<&str, &str> = phf_map! {
+            "334.bf" => "33-4",
             "hello.bf" => "Hello.",
             "hydrogen_sound.bf" => "Ahh~! The sound of hydrogen!!"
         };
 
         for file in test_files.keys() {
-            let expected = tests.get(file).unwrap();
+            let expected = test_files.get(file).unwrap();
 
             match fs::read_to_string(format!("tests/{}", file)) {
                 Ok(content) => {
