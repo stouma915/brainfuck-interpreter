@@ -44,12 +44,12 @@ impl Memory {
     }
 
     pub fn increment(&mut self) -> () {
-        self.pointer = self.pointer + 1;
+        self.pointer += 1;
     }
 
     pub fn decrement(&mut self) -> () {
         if self.pointer >= 1 {
-            self.pointer = self.pointer - 1;
+            self.pointer -= 1;
         }
     }
 

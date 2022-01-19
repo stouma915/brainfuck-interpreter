@@ -31,3 +31,25 @@ pub fn current_epoch_milli() -> Option<u128> {
         Err(_) => None,
     }
 }
+
+pub fn search_loop_end(before: &str, after: &str) -> Option<usize> {
+    let mut result = None;
+
+    let mut count_of_bracket = 0;
+    let mut count_of_closing_bracket = 0;
+
+    for (index, char) in after.chars().enumerate() {
+        if char == '[' {
+            count_of_bracket += 1;
+        } else if char == ']' {
+            count_of_closing_bracket += 1;
+        }
+
+        if count_of_bracket == count_of_closing_bracket {
+            result = Some(index + before.len());
+            break;
+        }
+    }
+
+    result
+}

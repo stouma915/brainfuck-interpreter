@@ -5,6 +5,7 @@ use colored::Colorize;
 
 use crate::ascii_converter;
 use crate::memory::Memory;
+use crate::util;
 
 pub struct EvalResult {
     pub content: String,
@@ -12,36 +13,23 @@ pub struct EvalResult {
 }
 
 pub struct EvalError {
-    pub message: String,
+    pub message: &'static str,
 }
 
 pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
-    let mut content = String::from("");
+    let mut contents: Vec<String> = Vec::new();
     let mut error = None;
 
-    let chars = code.chars().collect::<Vec<char>>();
-    for elem in chars.iter().enumerate() {
-        if error.is_some() {
-            break;
-        }
-
-        match elem.1 {
+    for (index, char) in code.chars().enumerate() {
+        match char {
             '+' => memory.increment_value(),
             '-' => memory.decrement_value(),
             '>' => memory.increment(),
             '<' => memory.decrement(),
-            '.' => {
-                let char_code = memory.get_content();
-                match ascii_converter::convert_to_char(char_code) {
-                    Some(c) => content.push_str(c.to_string().as_str()),
-                    None => {
-                        error = Some(EvalError {
-                            message: String::from(format!("Unknown character code: {}", char_code)),
-                        });
-                        break;
-                    }
-                }
-            }
+            '.' => match ascii_converter::convert(memory.get_content()) {
+                Some(value) => contents.push(String::from(value)),
+                None => contents.push(String::from("\0")),
+            },
             ',' => {
                 println!("Input was requested.");
 
@@ -76,44 +64,23 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
                 memory.set_value(input);
             }
             '[' => {
-                let code_before_bracket = code[0..elem.0].parse::<String>().unwrap();
-                let code_after_bracket = code[elem.0..code.len()].parse::<String>().unwrap();
+                let code_before_bracket = code[0..index].parse::<String>().unwrap();
+                let code_after_bracket = &code[index..code.len()].parse::<String>().unwrap();
 
-                let mut count_of_bracket = 0;
-                let mut count_of_closing_bracket = 0;
-
-                let mut loop_end_index = None;
-
-                let chars_after_bracket = code_after_bracket.chars().collect::<Vec<char>>();
-                for elem in chars_after_bracket.iter().enumerate() {
-                    let i = elem.0;
-                    let value = elem.1;
-
-                    if *value == '[' {
-                        count_of_bracket = count_of_bracket + 1;
-                    }
-                    if *value == ']' {
-                        count_of_closing_bracket = count_of_closing_bracket + 1;
-                    }
-
-                    if count_of_bracket == count_of_closing_bracket {
-                        loop_end_index = Some(i + code_before_bracket.len());
+                let loop_end_index = match util::search_loop_end(
+                    code_before_bracket.as_str(),
+                    code_after_bracket.as_str(),
+                ) {
+                    Some(index) => index,
+                    None => {
+                        error = Some("The end of the loop couldn't be identified.");
                         break;
                     }
-                }
-
-                if loop_end_index.is_none() {
-                    error = Some(EvalError {
-                        message: String::from("The end of the loop couldn't be identified."),
-                    });
-                    break;
-                }
+                };
 
                 let length_of_code = code.len();
-                let code_to_loop = code[elem.0 + 1..loop_end_index.unwrap()]
-                    .parse::<String>()
-                    .unwrap();
-                let after_loop = code[loop_end_index.unwrap() + 1..length_of_code]
+                let code_to_loop = code[index + 1..loop_end_index].parse::<String>().unwrap();
+                let after_loop = code[loop_end_index + 1..length_of_code]
                     .parse::<String>()
                     .unwrap();
 
@@ -121,10 +88,10 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
                     let result = eval(&code_to_loop, memory);
                     match result {
                         Ok(eval_result) => {
-                            content.push_str(eval_result.content.as_str());
+                            contents.push(eval_result.content);
                         }
                         Err(err) => {
-                            error = Some(err);
+                            error = Some(err.message);
                             break;
                         }
                     }
@@ -133,10 +100,10 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
                 let result = eval(&after_loop, memory);
                 match result {
                     Ok(eval_result) => {
-                        content.push_str(eval_result.content.as_str());
+                        contents.push(eval_result.content);
                     }
                     Err(err) => {
-                        error = Some(err);
+                        error = Some(err.message);
                     }
                 }
 
@@ -146,11 +113,12 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
         }
     }
 
-    match error {
-        Some(error) => Err(error),
-        None => Ok(EvalResult {
-            content,
-            memory: memory.copied(),
-        }),
+    if let Some(err) = error {
+        return Err(EvalError { message: err });
     }
+
+    Ok(EvalResult {
+        content: contents.join(""),
+        memory: memory.copied(),
+    })
 }
