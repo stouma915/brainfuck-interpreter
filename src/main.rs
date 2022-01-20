@@ -89,11 +89,21 @@ fn interpreter(source_code: &str, verbose: bool) -> i32 {
                 println!("{}", "Execution successful.".bright_green());
                 println!("{}: {}", "Content".bright_blue(), content_to_show);
                 println!("{}: {}ms", "Elapsed".bright_blue(), elapsed);
-                println!(
-                    "{}: {}",
-                    "Memory".bright_blue(),
-                    util::parse_memory(eval_result.memory)
-                );
+                print!("{}: [ ", "Memory".bright_blue());
+
+                let mut memory_entries = util::parse_memory(memory);
+
+                if !memory_entries.is_empty() {
+                    let final_entry = memory_entries.remove(memory_entries.len() - 1);
+
+                    for entry in memory_entries {
+                        print!("{}, ", entry);
+                    }
+
+                    print!("{}", final_entry);
+                }
+
+                println!(" ]");
             } else {
                 println!("{}", eval_result.content);
             }
@@ -177,11 +187,21 @@ fn interactive_interpreter(verbose: bool) -> i32 {
                         println!("{}", "Execution successful.".bright_green());
                         println!("{}: {}", "Content".bright_blue(), content_to_show);
                         println!("{}: {}ms", "Elapsed".bright_blue(), elapsed);
-                        println!(
-                            "{}: {}",
-                            "Memory".bright_blue(),
-                            util::parse_memory(eval_result.memory)
-                        );
+                        print!("{}: [ ", "Memory".bright_blue());
+
+                        let mut memory_entries = util::parse_memory(memory);
+
+                        if !memory_entries.is_empty() {
+                            let final_entry = memory_entries.remove(memory_entries.len() - 1);
+
+                            for entry in memory_entries {
+                                print!("{}, ", entry);
+                            }
+
+                            print!("{}", final_entry);
+                        }
+
+                        println!(" ]");
                     } else {
                         println!("{}", eval_result.content);
                     }

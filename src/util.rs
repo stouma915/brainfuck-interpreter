@@ -1,27 +1,37 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
+use colored::{ColoredString, Colorize};
+
 use crate::memory::Memory;
 
-pub fn parse_memory(mut memory: Memory) -> String {
+pub fn parse_memory(mut memory: Memory) -> Vec<ColoredString> {
     if memory.get_contents().is_empty() {
-        return String::from("[]");
+        return Vec::new();
     }
 
-    let mut parsed_memory = String::from("[");
+    let mut parsed_memories: Vec<ColoredString> = Vec::new();
 
     let memory_contents = memory.get_contents();
 
     let mut keys = memory_contents.keys().collect::<Vec<&i32>>();
     keys.sort();
     for key in keys {
-        let value = memory_contents.get(key).unwrap();
-        parsed_memory.push_str(&*format!("{} : {}, ", key, value));
+        let value = memory_contents.get(key).unwrap().to_string();
+        parsed_memories.push(
+            ColoredString::from(
+                format!(
+                    "{} {} {}",
+                    key.to_string().as_str().blue(),
+                    ":".bright_white(),
+                    value.as_str().white()
+                )
+                .as_str(),
+            )
+            .on_bright_black(),
+        );
     }
 
-    parsed_memory = parsed_memory[0..parsed_memory.len() - 2].parse().unwrap();
-    parsed_memory.push_str("]");
-
-    parsed_memory
+    parsed_memories
 }
 
 pub fn current_epoch_milli() -> Option<u128> {
