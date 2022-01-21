@@ -4,7 +4,7 @@ use colored::{ColoredString, Colorize};
 
 use crate::memory::Memory;
 
-pub fn parse_memory(mut memory: Memory) -> Vec<ColoredString> {
+pub fn parse_memory(memory: Memory) -> Vec<ColoredString> {
     if memory.get_contents().is_empty() {
         return Vec::new();
     }

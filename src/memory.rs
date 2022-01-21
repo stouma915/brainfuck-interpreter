@@ -53,11 +53,11 @@ impl Memory {
         }
     }
 
-    pub fn get_content(&mut self) -> i16 {
+    pub fn get_content(&self) -> i16 {
         *self.content.get(&self.pointer).unwrap_or(&0i16)
     }
 
-    pub fn get_contents(&mut self) -> HashMap<i32, i16> {
+    pub fn get_contents(&self) -> HashMap<i32, i16> {
         self.content.clone()
     }
 
