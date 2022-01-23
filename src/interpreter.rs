@@ -78,9 +78,8 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
                     }
                 };
 
-                let length_of_code = code.len();
                 let code_to_loop = code[index + 1..loop_end_index].parse::<String>().unwrap();
-                let after_loop = code[loop_end_index + 1..length_of_code]
+                let after_loop = code[loop_end_index + 1..code.len()]
                     .parse::<String>()
                     .unwrap();
 
