@@ -8,7 +8,7 @@ use crate::memory::Memory;
 use crate::util;
 
 pub struct EvalResult {
-    pub content: String,
+    pub output: String,
     pub memory: Memory,
 }
 
@@ -17,7 +17,7 @@ pub struct EvalError {
 }
 
 pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
-    let mut contents: Vec<String> = Vec::new();
+    let mut outputs: Vec<String> = Vec::new();
     let mut error = None;
 
     for (index, char) in code.chars().enumerate() {
@@ -27,8 +27,8 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
             '>' => memory.increment(),
             '<' => memory.decrement(),
             '.' => match ascii_converter::convert(memory.get_content()) {
-                Some(value) => contents.push(String::from(value)),
-                None => contents.push(String::from("\0")),
+                Some(value) => outputs.push(String::from(value)),
+                None => outputs.push(String::from("\0")),
             },
             ',' => {
                 println!("Input was requested.");
@@ -87,7 +87,7 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
                     let result = eval(&code_to_loop, memory);
                     match result {
                         Ok(eval_result) => {
-                            contents.push(eval_result.content);
+                            outputs.push(eval_result.output);
                         }
                         Err(err) => {
                             error = Some(err.message);
@@ -99,7 +99,7 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
                 let result = eval(&after_loop, memory);
                 match result {
                     Ok(eval_result) => {
-                        contents.push(eval_result.content);
+                        outputs.push(eval_result.output);
                     }
                     Err(err) => {
                         error = Some(err.message);
@@ -117,7 +117,7 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
     }
 
     Ok(EvalResult {
-        content: contents.join(""),
+        output: outputs.join(""),
         memory: memory.copied(),
     })
 }

@@ -80,14 +80,14 @@ fn interpreter(source_code: &str, verbose: bool) -> i32 {
     match result {
         Ok(eval_result) => {
             if verbose {
-                let content_to_show = if eval_result.content.len() == 0 {
+                let output_to_show = if eval_result.output.len() == 0 {
                     "Nothing to show.".bright_red().italic()
                 } else {
-                    ColoredString::from(eval_result.content.as_str())
+                    ColoredString::from(eval_result.output.as_str())
                 };
 
                 println!("{}", "Execution successful.".bright_green());
-                println!("{}: {}", "Content".bright_blue(), content_to_show);
+                println!("{}: {}", "Output".bright_blue(), output_to_show);
                 println!("{}: {}ms", "Elapsed".bright_blue(), elapsed);
                 print!("{}: [ ", "Memory".bright_blue());
 
@@ -105,7 +105,7 @@ fn interpreter(source_code: &str, verbose: bool) -> i32 {
 
                 println!(" ]");
             } else {
-                println!("{}", eval_result.content);
+                println!("{}", eval_result.output);
             }
 
             0
@@ -177,15 +177,15 @@ fn interactive_interpreter(verbose: bool) -> i32 {
             match result {
                 Ok(eval_result) => {
                     if verbose {
-                        let content_to_show = if eval_result.content.len() == 0 {
+                        let output_to_show = if eval_result.output.len() == 0 {
                             "Nothing to show.".bright_red().italic()
                         } else {
-                            ColoredString::from(eval_result.content.as_str())
+                            ColoredString::from(eval_result.output.as_str())
                         };
 
                         println!();
                         println!("{}", "Execution successful.".bright_green());
-                        println!("{}: {}", "Content".bright_blue(), content_to_show);
+                        println!("{}: {}", "Output".bright_blue(), output_to_show);
                         println!("{}: {}ms", "Elapsed".bright_blue(), elapsed);
                         print!("{}: [ ", "Memory".bright_blue());
 
@@ -203,7 +203,7 @@ fn interactive_interpreter(verbose: bool) -> i32 {
 
                         println!(" ]");
                     } else {
-                        println!("{}", eval_result.content);
+                        println!("{}", eval_result.output);
                     }
                 }
                 Err(error) => {

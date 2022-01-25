@@ -40,7 +40,7 @@ mod interpreter_spec {
                 Ok(content) => {
                     let eval_result = eval(&content, &mut Memory::new());
                     assert_eq!(eval_result.is_ok(), true);
-                    assert_eq!(eval_result.ok().unwrap().content, String::from(*expected));
+                    assert_eq!(eval_result.ok().unwrap().output, String::from(*expected));
                 }
                 Err(err) => {
                     panic!("Unable to read test file: {} ({:?})", file, err.kind());
