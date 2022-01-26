@@ -1,4 +1,4 @@
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::{SystemTime, SystemTimeError, UNIX_EPOCH};
 
 use colored::{ColoredString, Colorize};
 
@@ -34,12 +34,10 @@ pub fn parse_memory(memory: Memory) -> Vec<ColoredString> {
     parsed_memories
 }
 
-pub fn current_epoch_milli() -> Option<u128> {
-    let now = SystemTime::now();
-    match now.duration_since(UNIX_EPOCH) {
-        Ok(duration) => Some(duration.as_millis()),
-        Err(_) => None,
-    }
+pub fn current_epoch_milli() -> Result<u128, SystemTimeError> {
+    SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .map(|duration| duration.as_millis())
 }
 
 pub fn search_loop_end(before: &str, after: &str) -> Option<usize> {

@@ -51,9 +51,9 @@ fn main() {
 fn interpreter(source_code: &str, verbose: bool) -> i32 {
     let start_time = if verbose {
         match util::current_epoch_milli() {
-            Some(time) => time,
-            None => {
-                println!("Unable to get the current unix epoch.");
+            Ok(time) => time,
+            Err(err) => {
+                println!("Unable to get the current unix epoch: {}", err);
                 exit(1);
             }
         }
@@ -66,9 +66,9 @@ fn interpreter(source_code: &str, verbose: bool) -> i32 {
 
     let finish_time = if verbose {
         match util::current_epoch_milli() {
-            Some(time) => time,
-            None => {
-                println!("Unable to get the current unix epoch.");
+            Ok(time) => time,
+            Err(err) => {
+                println!("Unable to get the current unix epoch: {}", err);
                 exit(1);
             }
         }
@@ -148,9 +148,9 @@ fn interactive_interpreter(verbose: bool) -> i32 {
         } else {
             let start_time = if verbose {
                 match util::current_epoch_milli() {
-                    Some(time) => time,
-                    None => {
-                        println!("Unable to get the current unix epoch.");
+                    Ok(time) => time,
+                    Err(err) => {
+                        println!("Unable to get the current unix epoch: {}", err);
                         std::process::exit(1);
                     }
                 }
@@ -163,9 +163,9 @@ fn interactive_interpreter(verbose: bool) -> i32 {
 
             let finish_time = if verbose {
                 match util::current_epoch_milli() {
-                    Some(time) => time,
-                    None => {
-                        println!("Unable to get the current unix epoch.");
+                    Ok(time) => time,
+                    Err(err) => {
+                        println!("Unable to get the current unix epoch: {}", err);
                         std::process::exit(1);
                     }
                 }
