@@ -91,12 +91,12 @@ fn interpreter(source_code: &str, verbose: bool) -> i32 {
                 println!("{}: {}ms", "Elapsed".bright_blue(), elapsed);
                 print!("{}: [ ", "Memory".bright_blue());
 
-                let mut memory_entries = util::parse_memory(memory);
+                let mut parsed_entries = util::parse_memory(memory);
 
-                if !memory_entries.is_empty() {
-                    let final_entry = memory_entries.remove(memory_entries.len() - 1);
+                if !parsed_entries.is_empty() {
+                    let final_entry = parsed_entries.remove(parsed_entries.len() - 1);
 
-                    for entry in memory_entries {
+                    for entry in parsed_entries {
                         print!("{}, ", entry);
                     }
 
@@ -189,12 +189,12 @@ fn interactive_interpreter(verbose: bool) -> i32 {
                         println!("{}: {}ms", "Elapsed".bright_blue(), elapsed);
                         print!("{}: [ ", "Memory".bright_blue());
 
-                        let mut memory_entries = util::parse_memory(memory);
+                        let mut parsed_entries = util::parse_memory(memory);
 
-                        if !memory_entries.is_empty() {
-                            let final_entry = memory_entries.remove(memory_entries.len() - 1);
+                        if !parsed_entries.is_empty() {
+                            let final_entry = parsed_entries.remove(parsed_entries.len() - 1);
 
-                            for entry in memory_entries {
+                            for entry in parsed_entries {
                                 print!("{}, ", entry);
                             }
 
