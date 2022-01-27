@@ -5,10 +5,6 @@ use colored::{ColoredString, Colorize};
 use crate::memory::Memory;
 
 pub fn parse_memory(memory: Memory) -> Vec<ColoredString> {
-    if memory.get_contents().is_empty() {
-        return Vec::new();
-    }
-
     let mut parsed_memories: Vec<ColoredString> = Vec::new();
 
     let memory_contents = memory.get_contents();
