@@ -11,6 +11,7 @@ pub fn parse_memory(memory: Memory) -> Vec<ColoredString> {
 
     let mut keys = memory_contents.keys().collect::<Vec<&i32>>();
     keys.sort();
+
     for key in keys {
         let value = memory_contents.get(key).unwrap().to_string();
         parsed_memories.push(
