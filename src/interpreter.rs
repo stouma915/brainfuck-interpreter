@@ -26,7 +26,7 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
             '-' => memory.decrement_value(),
             '>' => memory.increment(),
             '<' => memory.decrement(),
-            '.' => match ascii_converter::convert(memory.get_content()) {
+            '.' => match ascii_converter::convert(memory.get_current_value()) {
                 Some(value) => outputs.push(String::from(value)),
                 None => outputs.push(String::from("\0")),
             },
@@ -83,7 +83,7 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
                     .parse::<String>()
                     .unwrap();
 
-                while memory.get_content() != 0 {
+                while memory.get_current_value() != 0 {
                     let result = eval(&code_to_loop, memory);
                     match result {
                         Ok(eval_result) => {
