@@ -64,7 +64,7 @@ impl Memory {
     pub fn copied(&self) -> Memory {
         Memory {
             pointer: self.pointer,
-            entries: self.entries.clone(),
+            entries: self.get_entries(),
         }
     }
 }
