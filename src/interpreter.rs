@@ -45,8 +45,7 @@ pub fn eval(code: &str, memory: &mut Memory) -> Result<EvalResult, EvalError> {
                     io::stdin().read_line(&mut word).ok();
 
                     let trimmed = word.replace("\n", "");
-                    let parsed = trimmed.parse::<i16>();
-                    match parsed {
+                    match trimmed.parse::<i16>() {
                         Ok(result) => {
                             if result >= -128 && result <= 127 {
                                 input = result;
