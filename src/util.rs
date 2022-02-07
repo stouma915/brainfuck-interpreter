@@ -51,7 +51,7 @@ pub fn search_loop_end(before: &str, after: &str) -> Option<usize> {
         }
 
         if count_of_bracket == count_of_closing_bracket {
-            result = Some(index + before.len());
+            result = Some((index + 1) + before.len());
             break;
         }
     }
